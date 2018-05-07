@@ -1,7 +1,5 @@
 (ns forca.core)
 
-(declare check-guess)
-
 (def starting-life-count 6)
 (def secret-word "WATERMELON")
 
@@ -34,11 +32,6 @@
                     (recur life-count word (conj hits guess)))
                 (do
 					(recur (dec life-count) word hits))))))
-
-(defn check-guess [guess life-count word hits]
-	(if (is-hit? guess word) 
-		(game life-count word (conj hits guess))
-		(game (dec life-count) word hits)))
 
 (defn start []
 	(game starting-life-count secret-word #{}))
