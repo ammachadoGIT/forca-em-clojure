@@ -22,10 +22,12 @@
   (empty? (missing-letters word hits)))
 
 (defn display-status [life-count word hits errors]
+  (print (str (char 27) "[2J"))
   (println "life-count:" life-count)
   (doseq [letter (seq word)]
     (if (contains? hits (str letter))
       (print letter " ") (print "_" " ")))
+  (println)
   (println)
   (print "Errors: ")
   (doseq [letter (seq errors)]
