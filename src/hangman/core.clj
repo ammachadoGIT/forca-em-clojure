@@ -1,21 +1,17 @@
 (ns hangman.core)
+(use 'clojure.java.io)
 
 (def starting-life-count 6)
 
-; TODO: read words from external file
-(defn get-random-word [] (rand-nth ["ACRES" "ADULT" "ADVICE" "ARRANGEMENT" "ATTEMPT" "AUGUST" "AUTUMN" "BORDER"
-                                    "BREEZE" "BRICK" "CALM" "CANAL" "CASEY" "CAST" "CHOSE" "CLAWS" "COACH" "CONSTANTLY" "CONTRAST" "COOKIES"
-                                    "CUSTOMS" "DAMAGE" "DANNY" "DEEPLY" "DEPTH" "DISCUSSION" "DOLL" "DONKEY" "EGYPT" "ELLEN" "ESSENTIAL"
-                                    "EXCHANGE" "EXIST" "EXPLANATION" "FACING" "FILM" "FINEST" "FIREPLACE" "FLOATING" "FOLKS" "FORT"
-                                    "GARAGE" "GRABBED" "GRANDMOTHER" "HABIT" "HAPPILY" "HARRY" "HEADING" "HUNTER" "ILLINOIS" "IMAGE"
-                                    "INDEPENDENT" "INSTANT" "JANUARY" "KIDS" "LABEL" "LEE" "LUNGS" "MANUFACTURING" "MARTIN" "MATHEMATICS"
-                                    "MELTED" "MEMORY" "MILL" "MISSION" "MONKEY" "MOUNT" "MYSTERIOUS" "NEIGHBORHOOD" "NORWAY" "NUTS"
-                                    "OCCASIONALLY" "OFFICIAL" "OURSELVES" "PALACE" "PENNSYLVANIA" "PHILADELPHIA" "PLATES" "POETRY"
-                                    "POLICEMAN" "POSITIVE" "POSSIBLY" "PRACTICAL" "PRIDE" "PROMISED" "RECALL" "RELATIONSHIP"
-                                    "REMARKABLE" "REQUIRE" "RHYME" "ROCKY" "RUBBED" "RUSH" "SALE" "SATELLITES" "SATISFIED" "SCARED"
-                                    "SELECTION" "SHAKE" "SHAKING" "SHALLOW" "SHOUT" "SILLY" "SIMPLEST" "SLIGHT" "SLIP" "SLOPE" "SOAP"
-                                    "SOLAR" "SPECIES" "SPIN" "STIFF" "SWUNG" "TALES" "THUMB" "TOBACCO" "TOY" "TRAP" "TREATED" "TUNE"
-                                    "UNIVERSITY" "VAPOR" "VESSELS" "WEALTH" "WOLF" "ZOO"]))
+(defn get-words-from-file [fname]
+  (with-open [r (reader fname)]
+    (doall (line-seq r))))
+
+(def random-words
+  (get-words-from-file "src/hangman/words.txt"))
+
+(defn get-random-word []
+  (rand-nth random-words))
 
 (defn lose [word]
   (println "You lose!")
@@ -62,8 +58,8 @@
       (if (contains? errors guess)
         (recur life-count word hits errors)
         (if (is-hit? guess word)
-            (recur life-count word (conj hits guess) errors)
-            (recur (dec life-count) word hits (conj errors guess)))))))
+          (recur life-count word (conj hits guess) errors)
+          (recur (dec life-count) word hits (conj errors guess)))))))
 
 (defn -main
   "A fun Hangman game."
