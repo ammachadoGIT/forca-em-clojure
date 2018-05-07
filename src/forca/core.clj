@@ -17,8 +17,9 @@
                             "SOLAR" "SPECIES" "SPIN" "STIFF" "SWUNG" "TALES" "THUMB" "TOBACCO" "TOY" "TRAP" "TREATED" "TUNE"
                             "UNIVERSITY" "VAPOR" "VESSELS" "WEALTH" "WOLF" "ZOO"]))
 
-(defn lose []
-  (println "You lose!"))
+(defn lose [word]
+  (println "You lose!")
+  (println "The secret word was" word))
 
 (defn win []
   (println "You win!"))
@@ -52,7 +53,7 @@
 (defn game [life-count word hits errors]
   (display-status life-count word hits errors)
   (cond
-    (= life-count 0) (lose)
+    (= life-count 0) (lose word)
     (correct-word? word hits) (win)
     :else
     (let [guess (read-guess!)]
