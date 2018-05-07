@@ -21,7 +21,15 @@
 (defn correct-word? [word hits]
 	(empty? (missing-letters word hits)))
 
+(defn display-status [life-count word hits]
+    (println "life-count" life-count)
+    (doseq [letra (seq word)]
+        (if (contains? hits (str letra))
+            (print letra " ") (print "_" " ")))
+    (println))
+
 (defn game [life-count word hits]
+	(display-status life-count word hits)
 	 (cond
         (= life-count 0) (lose)
         (correct-word? word hits) (win)
