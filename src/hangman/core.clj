@@ -40,7 +40,7 @@
       (print letter " ") (print "_" " ")))
   (println)
   (println)
-  (if (> (count errors) 0)
+  (if (pos? (count errors))
     (do
       (print "Errors: ")
       (doseq [letter (seq errors)]
@@ -51,7 +51,7 @@
 (defn game [life-count word hits errors]
   (display-status life-count word hits errors)
   (cond
-    (= life-count 0) (lose word)
+    (zero? life-count) (lose word)
     (correct-word? word hits) (win)
     :else
     (let [guess (read-guess!)]
