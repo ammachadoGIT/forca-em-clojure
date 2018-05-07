@@ -63,5 +63,8 @@
         (do
           (recur (dec life-count) word hits (conj errors guess)))))))
 
-(defn start []
-  (game starting-life-count (get-random-word) #{} #{}))
+(defn -main
+    "A fun Hangman game."
+    [& args]
+    (game starting-life-count (get-random-word) #{} #{}))
+  
