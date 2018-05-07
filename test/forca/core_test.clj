@@ -1,6 +1,6 @@
-(ns forca.core-test
+(ns hangman.core-test
   (:require [clojure.test :refer :all]
-            [forca.core :refer :all]))
+            [hangman.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."

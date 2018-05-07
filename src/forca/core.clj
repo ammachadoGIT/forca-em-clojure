@@ -1,66 +1,44 @@
 (ns forca.core)
 
-;; declarando a função, para que, no momento da compilação, ele
-;; saiba que existe uma "avalia-chute", que é invocada pela jogo
-(declare avalia-chute)
+(declare check-guess)
 
-;; definindo o total de vidas que nosso jogo tem, e a palavra secreta
-(def total-de-vidas 6)
-(def palavra-secreta "MELANCIA")
+(def starting-life-count 6)
+(def secret-word "WATERMELON")
 
-(defn perdeu []
-	(print "Você perdeu, mané!")
-)
+(defn lose []
+	(println "You lose!"))
 
-(defn ganhou []
-	(print "Caraca, parabéns!")
-)
+(defn win []
+	(println "You win!"))
 
-;; .contains invoca funcao do java
-;; ? no fim, é pq retorna booleano
-(defn acertou? [chute palavra]
-	(.contains palavra chute)
-)
+(defn is-hit? [guess word]
+	(.contains word guess))
 
-;; ! é pq tem side-effect
-(defn le-letra! []
-	(read-line)
-)
+(defn read-guess! []
+	(.toUpperCase (read-line)))
 
-;; (str) pra converter Char pra String, pq nosso conjunto é de strings
-;; fn declarando uma função
-;; seq quebra uma string em uma lista de chars
-(defn letras-faltantes [palavra acertos]
-	(filter (fn [letra] (not (contains? acertos (str letra)))) (seq palavra))
-)
+(defn missing-letters [word hits]
+	(filter (fn [letra] (not (contains? hits (str letra)))) (seq word)))
 
-(defn acertou-a-palavra-toda? [palavra acertos]
-	(empty? (letras-faltantes palavra acertos))
-)
+(defn correct-word? [word hits]
+	(empty? (missing-letters word hits)))
 
-;; if dentro de if
-(defn jogo [vidas palavra acertos]
-	(if (= vidas 0) (perdeu) 
-		(if (acertou-a-palavra-toda? palavra acertos) 
-			(ganhou) 
-			(avalia-chute (le-letra!) vidas palavra acertos)
-		)
-	)
-)
+(defn game [life-count word hits]
+	 (cond
+        (= life-count 0) (lose)
+        (correct-word? word hits) (win)
+        :else   
+        (let [guess (read-guess!)]
+            (if (is-hit? guess word)
+                (do
+                    (recur life-count word (conj hits guess)))
+                (do
+					(recur (dec life-count) word hits))))))
 
-;; conj adiciona no conjunto
-;; dec diminui 1 na variavel
-(defn avalia-chute [chute vidas palavra acertos]
-	(if (acertou? chute palavra) 
-		(jogo vidas palavra (conj acertos chute))
-		(jogo (dec vidas) palavra acertos)
-	)
-)
+(defn check-guess [guess life-count word hits]
+	(if (is-hit? guess word) 
+		(game life-count word (conj hits guess))
+		(game (dec life-count) word hits)))
 
-;; comecamos o jogo com o total de vidas, a palavra secreta, e nada de acertos
-;; no repl
-;; (require '[forca.core :as forca] :reload)
-;; (forca/comeca-o-jogo) pra jogar
-(defn comeca-o-jogo []
-	(jogo total-de-vidas palavra-secreta #{})
-)
+(defn start []
+	(game starting-life-count secret-word #{}))
