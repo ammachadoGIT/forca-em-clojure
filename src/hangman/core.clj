@@ -1,4 +1,4 @@
-(ns forca.core)
+(ns hangman.core)
 
 (def starting-life-count 6)
 
