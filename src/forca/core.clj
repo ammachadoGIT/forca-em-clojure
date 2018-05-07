@@ -59,11 +59,11 @@
     (correct-word? word hits) (win)
     :else
     (let [guess (read-guess!)]
-      (if (is-hit? guess word)
-        (do
-          (recur life-count word (conj hits guess) errors))
-        (do
-          (recur (dec life-count) word hits (conj errors guess)))))))
+      (if (contains? errors guess)
+        (recur life-count word hits errors)
+        (if (is-hit? guess word)
+            (recur life-count word (conj hits guess) errors)
+            (recur (dec life-count) word hits (conj errors guess)))))))
 
 (defn -main
   "A fun Hangman game."
