@@ -1,17 +1,7 @@
-(ns hangman.core)
-(use 'clojure.java.io)
+(ns hangman.core
+  (require [hangman.random-word :refer [get-random-word]]))
 
 (def starting-life-count 6)
-
-(defn get-words-from-file [fname]
-  (with-open [r (reader fname)]
-    (doall (line-seq r))))
-
-(def random-words
-  (get-words-from-file "src/hangman/words.txt"))
-
-(defn get-random-word []
-  (rand-nth random-words))
 
 (defn lose [word]
   (println "You lose!")
