@@ -7,4 +7,4 @@
     (doall (line-seq r))))
 
 (defn get-random-word []
-  (rand-nth (get-words-from-file "src/hangman/words.txt")))
+  (rand-nth (get-words-from-file "data/words.txt")))
