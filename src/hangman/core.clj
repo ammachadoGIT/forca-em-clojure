@@ -1,4 +1,5 @@
 (ns hangman.core
+  (:gen-class :main true)
   (require [hangman.random-word :refer [get-random-word]]))
 
 (def starting-life-count 6)
